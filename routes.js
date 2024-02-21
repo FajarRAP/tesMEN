@@ -1,5 +1,5 @@
 const express = require('express');
-const Mahasiswa = require('./model');
+const Mahasiswa = require('./models/mahasiswa_model');
 
 const router = express.Router();
 
