@@ -1,17 +1,17 @@
 const express = require('express');
-const Mahasiswa = require('./models/mahasiswa_model');
+const Keuangan = require('./models/keuangan_model');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const mahasiswas = await Mahasiswa.find();
-    res.json(mahasiswas);
+    const keuangans = await Keuangan.find();
+    res.json(keuangans);
 });
 
 router.post('/', async (req, res) => {
-    const mahasiswa = new Mahasiswa(req.body);
-    await mahasiswa.save();
-    res.json(mahasiswa);
+    const keuangan = new Keuangan(req.body);
+    await keuangan.save();
+    res.json(keuangan);
 });
 
 module.exports = router;
