@@ -15,18 +15,11 @@ router.get('/', async (req, res) => {
         },
     ]);
 
-    let totalPemasukan = 0;
-    let totalPengeluaran = 0;
+    let pemasukan = total.find(jenis => jenis._id === 'Pemasukan');
+    let pengeluaran = total.find(jenis => jenis._id === "Pengeluaran");
 
-    switch (total.length) {
-        case 1:
-            totalPemasukan = total[0]['total'];
-            break;
-        case 2:
-            totalPemasukan = total[0]['total'];
-            totalPengeluaran = total[1]['total'];
-            break;
-    }
+    const totalPemasukan = pemasukan ? pemasukan.total : 0;
+    const totalPengeluaran = pengeluaran ? pengeluaran.total : 0;
 
     const data = [
         {
