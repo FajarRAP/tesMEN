@@ -6,7 +6,27 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     const keuangans = await Keuangan.find();
-    response(res, 200, 'Berhasil Ambil Data', keuangans);
+    const total = await Keuangan.aggregate([
+        {
+            $group: {
+                _id: '$jenis',
+                total: { $sum: '$nominal' },
+            },
+        },
+    ]);
+
+    const totalPemasukan = total[0]['total'];
+    const totalPengeluaran = total[1]['total'];
+
+    const data = [
+        {
+            'pemasukan': totalPemasukan,
+            'pengeluaran': totalPengeluaran,
+        },
+        keuangans,
+    ];
+
+    response(res, 200, 'Berhasil Ambil Data', data);
 });
 
 router.post('/', async (req, res) => {
