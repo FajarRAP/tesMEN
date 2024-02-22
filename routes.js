@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     const keuangans = await Keuangan.find();
-    res.json(keuangans);
+    response(res, 200, 'Berhasil Ambil Data', keuangans);
 });
 
 router.post('/', async (req, res) => {
