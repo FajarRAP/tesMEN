@@ -15,8 +15,18 @@ router.get('/', async (req, res) => {
         },
     ]);
 
-    const totalPemasukan = total[0]['total'];
-    const totalPengeluaran = total[1]['total'];
+    let totalPemasukan = 0;
+    let totalPengeluaran = 0;
+
+    switch (total.length) {
+        case 1:
+            totalPemasukan = total[0]['total'];
+            break;
+        case 2:
+            totalPemasukan = total[0]['total'];
+            totalPengeluaran = total[1]['total'];
+            break;
+    }
 
     const data = [
         {
