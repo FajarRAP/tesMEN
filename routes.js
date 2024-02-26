@@ -21,12 +21,20 @@ router.get('/', async (req, res) => {
     const totalPemasukan = pemasukan ? pemasukan.total : 0;
     const totalPengeluaran = pengeluaran ? pengeluaran.total : 0;
 
+    const keuangansFormatted = keuangans.map((e) => {
+        const dateFormatted = e.tanggal.toLocaleDateString('en-GB').split('/').join('-');
+        return {
+            ...e._doc,
+            tanggal: dateFormatted
+        }
+    });
+
     const data = [
         {
             'pemasukan': totalPemasukan,
             'pengeluaran': totalPengeluaran,
         },
-        keuangans,
+        keuangansFormatted,
     ];
 
     response(res, 200, 'Berhasil Ambil Data', data);
@@ -42,6 +50,39 @@ router.post('/', async (req, res) => {
 
     await keuangan.save();
     response(res, 200, 'Berhasil Tambah Data', '');
+});
+
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+    try {
+        const update = await Keuangan.findById(id);
+        await update.updateOne(body);
+        if (update) {
+            response(res, 200, 'Berhasil Sunting Data', '');
+        } else {
+            response(res, 404, 'ID tidak ditemukan', '');
+        }
+    } catch (error) {
+        response(res, 500, error.message, '');
+    }
+
+});
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const hapus = await Keuangan.findByIdAndDelete(id);
+        if (hapus) {
+            response(res, 200, 'Berhasil Hapus Data', '');
+        } else {
+            response(res, 404, 'ID tidak ditemukan', '');
+        }
+        return;
+    } catch (error) {
+        response(res, 500, error.message, '');
+    }
 });
 
 module.exports = router;
